@@ -116,7 +116,7 @@ contact.hidden = !(SITE.email || SITE.whatsapp);
 
 /* Pinned sections: on short screens, shrink just enough to clear the nav. */
 const header = document.querySelector('.site-header');
-const pinned = document.querySelectorAll('.team-inner, .cost-inner, .work-inner');
+const pinned = document.querySelectorAll('.manifesto, .team-inner, .cost-inner, .work-inner');
 
 function fitPinned() {
   const nav = header.offsetHeight;
@@ -135,3 +135,26 @@ function fitPinned() {
 fitPinned();
 window.addEventListener('resize', fitPinned);
 document.fonts.ready.then(fitPinned);
+
+/* Hero: the last line cycles through what we build. */
+const rotor = document.getElementById('rotor');
+const wordCount = rotor.children.length;
+let word = 0;
+
+function showWord(index, animate) {
+  rotor.style.transition = animate ? '' : 'none';
+  rotor.style.transform = `translateY(${-index * 1.04}em)`;
+}
+
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  setInterval(() => {
+    word += 1;
+    showWord(word, true);
+    if (word === wordCount - 1) {
+      setTimeout(() => {
+        word = 0;
+        showWord(0, false);
+      }, 1000);
+    }
+  }, 2200);
+}
